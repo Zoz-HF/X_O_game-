@@ -1,4 +1,4 @@
-# proggg
+# XO Game
 
 A new Flutter project.
 
