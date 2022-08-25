@@ -197,21 +197,35 @@ class _MyGameState extends State<MyGame> {
     int col = 0, row = 0, mdiag = 0, sdiag = 0;
     int n = _matrix.length - 1;
     String play = _matrix[x][y];
-    for (int i = 0; i < _matrix.length; i++) {
-      if (play == _matrix[x][i]) row++;
-      if (play == _matrix[i][y]) col++;
-      if (play == _matrix[i][i]) mdiag++;
-      if (play == _matrix[i][n - i]) sdiag++;
-    }
-    if (row == n + 1 || col == n + 1 || mdiag == n + 1 || sdiag == n + 1) {
-      {
-        play == "O" ? oScore++ : xScore++;
+    if (count > 4) {
+      for (int i = 0; i < _matrix.length; i++) {
+        if (play == _matrix[x][i]) row++;
+        if (play == _matrix[i][y]) col++;
+        if (play == _matrix[i][i]) mdiag++;
+        if (play == _matrix[i][n - i]) sdiag++;
+      }
+      if (row == n + 1 || col == n + 1 || mdiag == n + 1 || sdiag == n + 1) {
+        {
+          play == "O" ? oScore++ : xScore++;
+          showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                    title: const Text("Winner", style: TextStyle(fontSize: 14)),
+                    content:
+                        Text("$play won", style: const TextStyle(fontSize: 20)),
+                  ));
+          _matrix = [
+            ["", "", ""],
+            ["", "", ""],
+            ["", "", ""]
+          ];
+          count = 0;
+        }
+      } else if (count == 9) {
         showDialog(
             context: context,
-            builder: (ctx) => AlertDialog(
-                  title: const Text("Winner", style: TextStyle(fontSize: 14)),
-                  content:
-                      Text("$play won", style: const TextStyle(fontSize: 20)),
+            builder: (ctx) => const AlertDialog(
+                  content: Text("Draw", style: TextStyle(fontSize: 20)),
                 ));
         _matrix = [
           ["", "", ""],
@@ -220,18 +234,6 @@ class _MyGameState extends State<MyGame> {
         ];
         count = 0;
       }
-    } else if (count == 9) {
-      showDialog(
-          context: context,
-          builder: (ctx) => const AlertDialog(
-                content: Text("Draw", style: TextStyle(fontSize: 20)),
-              ));
-      _matrix = [
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""]
-      ];
-      count = 0;
     }
   }
 }
